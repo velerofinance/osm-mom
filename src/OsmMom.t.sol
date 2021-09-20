@@ -65,7 +65,7 @@ contract OsmMomTest is DSTest {
     function setUp() public {
         osm = new OSM(address(this));
         mom = new OsmMom();
-        mom.setOsm("ETH-A", address(osm));
+        mom.setOsm("VLX-A", address(osm));
         caller = new OsmMomCaller(mom);
         authority = new SimpleAuthority(address(caller));
         mom.setAuthority(address(authority));
@@ -99,22 +99,22 @@ contract OsmMomTest is DSTest {
     }
 
     function testSetOsm() public {
-        mom.setOsm("ETH-B", address(1));
-        assertTrue(mom.osms("ETH-B") == address(1));
+        mom.setOsm("VLX-B", address(1));
+        assertTrue(mom.osms("VLX-B") == address(1));
     }
 
     function testFailSetOsm() public {
         // fails because the caller is not an owner
-        caller.setOsm("ETH-A", address(0));
+        caller.setOsm("VLX-A", address(0));
     }
 
     function testStopAuthorized() public {
-        caller.stop("ETH-A");
+        caller.stop("VLX-A");
         assertEq(osm.stopped(), 1);
     }
 
     function testStopOwner() public {
-        mom.stop("ETH-A");
+        mom.stop("VLX-A");
         assertEq(osm.stopped(), 1);
     }
 
@@ -122,12 +122,12 @@ contract OsmMomTest is DSTest {
         SimpleAuthority newAuthority = new SimpleAuthority(address(this));
         mom.setAuthority(address(newAuthority));
         // fails because the caller is no longer authorized on the mom
-        caller.stop("ETH-A");
+        caller.stop("VLX-A");
     }
 
     function testFailStopNoAuthority() public {
         mom.setAuthority(address(0));
-        caller.stop("ETH-A");
+        caller.stop("VLX-A");
     }
 
     function testFailIlkWithoutOsm() public {
